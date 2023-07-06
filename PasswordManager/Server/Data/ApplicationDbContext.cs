@@ -14,7 +14,13 @@ namespace PasswordManager.Server.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<ApplicationUser>().Navigation(e => e.Accounts).AutoInclude();
+        }
+
         public DbSet<Account> Account { get; set; } = default!;
-        public object AspNetUsers { get; internal set; }
     }
 }
