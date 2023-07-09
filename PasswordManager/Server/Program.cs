@@ -3,7 +3,6 @@ global using Microsoft.EntityFrameworkCore;
 global using PasswordManager.Server.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.ResponseCompression;
-using PasswordManager.Server.Models;
 using Microsoft.Data.Sqlite;
 
 

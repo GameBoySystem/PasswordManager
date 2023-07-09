@@ -13,6 +13,7 @@ namespace PasswordManager.Shared
         public string Password { get; set; }
         public string URL { get; set; }
         public string? Comment { get; set; }
-    }
 
+        public ICollection<ApplicationUser>? Users { get; set; }
+    }
 }

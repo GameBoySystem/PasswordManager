@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PasswordManager.Server.Data;
-using PasswordManager.Server.Models;
+//using PasswordManager.Server.Models;
 using PasswordManager.Shared;
 using static System.Reflection.Metadata.BlobBuilder;
 
@@ -33,26 +33,25 @@ namespace PasswordManager.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Account>>> GetAccount()
         {
-            //if (_context.Account == null)
-            //{
+            //var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            //if (user == null)
             //    return NotFound();
-            //}
-            //return await _context.Account.ToListAsync();
+            //return Ok(user.Accounts);
 
-            var account = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            if (account == null)
+            if (_context.Account == null)
+            {
                 return NotFound();
-            return Ok(account.Accounts);
-
+            }
+            return await _context.Account.ToListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
-          if (_context.Account == null)
-          {
-              return NotFound();
-          }
+            if (_context.Account == null)
+            {
+                return NotFound();
+            }
             var account = await _context.Account.FindAsync(id);
 
             if (account == null)
@@ -93,14 +92,26 @@ namespace PasswordManager.Server.Controllers
         }
 
         [HttpPost]
-        //[Route("")]
         public async Task<ActionResult<Account>> PostAccount(Account account)
         {
-          if (_context.Account == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Account'  is null.");
-          }
+            if (_context.Account == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Account'  is null.");
+            }
+
+            //+++++++++++++++++++++++++++++++++++++
+
+            string userId = User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            ApplicationUser ggg = _context.Users.Include(s => s.Accounts).FirstOrDefault(s => s.Id == userId);
+            //ApplicationUser hhh = _context.Users.Include(s => s.Accounts).FirstOrDefault(s => s.UserName == "hhh@gmail.com");
+
+            ggg.Accounts.Add(account);
+            //hhh.Accounts.Add(account);
+
+            //+++++++++++++++++++++++++++++++++++++
+
             _context.Account.Add(account);
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAccount", new { id = account.Id }, account);

@@ -21,8 +21,8 @@ namespace PasswordManager.Client.Services.AccountService
         public async Task GetAccount()
         {
             var result = await _http.GetFromJsonAsync<List<Account>>("api/Passwords");
-            //if (result != null)
-            //    Accounts = result;
+            if (result != null)
+                Accounts = result;
         }
 
         public async Task<Account> GetAccount(int id)
