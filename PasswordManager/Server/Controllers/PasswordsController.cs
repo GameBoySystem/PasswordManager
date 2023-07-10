@@ -35,8 +35,6 @@ namespace PasswordManager.Server.Controllers
         public async Task<ActionResult<List<Account>>> GetAccount()
         {
             string userId = User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            //ApplicationUser ggg = _context.Users.Include(s => s.Accounts).FirstOrDefault(s => s.Id == userId);
-
             var user = _context.Users.Include(s => s.Accounts).FirstOrDefault(s => s.Id == userId);
 
             if (user == null)
@@ -47,14 +45,7 @@ namespace PasswordManager.Server.Controllers
             var accounts = _context.Account
                 .Where(a => a.Users.Contains(user))
                 .ToList();
-
             return accounts;
-
-            //if (_context.Account == null)
-            //{
-            //    return NotFound();
-            //}
-            //return await _context.Account.ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -75,14 +66,25 @@ namespace PasswordManager.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAccount(int id, Account account)
+        public async Task<IActionResult> PutAccount(int id, AccountUpdate accountUpdate)
         {
-            if (id != account.Id)
+            if (id != accountUpdate.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(account).State = EntityState.Modified;
+            var existingAccount = await _context.Account.FindAsync(id);
+
+            if (existingAccount == null)
+            {
+                return NotFound();
+            }
+
+            existingAccount.Id = accountUpdate.Id;
+            existingAccount.Login = accountUpdate.Login;
+            existingAccount.Password = accountUpdate.Password;
+            existingAccount.URL = accountUpdate.URL;
+            existingAccount.Comment = accountUpdate.Comment;
 
             try
             {
@@ -111,16 +113,14 @@ namespace PasswordManager.Server.Controllers
                 return Problem("Entity set 'ApplicationDbContext.Account'  is null.");
             }
 
-            //+++++++++++++++++++++++++++++++++++++
-
             string userId = User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            ApplicationUser ggg = _context.Users.Include(s => s.Accounts).FirstOrDefault(s => s.Id == userId);
-            //ApplicationUser hhh = _context.Users.Include(s => s.Accounts).FirstOrDefault(s => s.UserName == "hhh@gmail.com");
+            var user = _context.Users.Include(s => s.Accounts).FirstOrDefault(s => s.Id == userId);
 
-            ggg.Accounts.Add(account);
-            //hhh.Accounts.Add(account);
-
-            //+++++++++++++++++++++++++++++++++++++
+            if (user == null)
+            {
+                return NotFound();
+            }
+            account.Users = new List<ApplicationUser> { user };
 
             _context.Account.Add(account);
 

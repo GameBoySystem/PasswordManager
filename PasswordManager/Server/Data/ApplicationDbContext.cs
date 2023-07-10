@@ -22,6 +22,7 @@ namespace PasswordManager.Server.Data
         }
 
         public DbSet<Account> Account { get; set; }
+        public DbSet<AccountUpdate> AccountUpdates { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
     }
 }
