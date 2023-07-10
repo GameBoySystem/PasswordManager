@@ -9,6 +9,6 @@ namespace PasswordManager.Shared
 {
     public class ApplicationUser : IdentityUser
     {
-        public List<Account>? Accounts { get; set; } = new List<Account>();
+        public List<Account> Accounts { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -11,9 +12,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PasswordManager.Server.Data;
+//using PasswordManager.Server.Migrations;
 //using PasswordManager.Server.Models;
 using PasswordManager.Shared;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace PasswordManager.Server.Controllers
 {
@@ -33,16 +34,27 @@ namespace PasswordManager.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Account>>> GetAccount()
         {
-            //var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            //if (user == null)
-            //    return NotFound();
-            //return Ok(user.Accounts);
+            string userId = User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            //ApplicationUser ggg = _context.Users.Include(s => s.Accounts).FirstOrDefault(s => s.Id == userId);
 
-            if (_context.Account == null)
+            var user = _context.Users.Include(s => s.Accounts).FirstOrDefault(s => s.Id == userId);
+
+            if (user == null)
             {
                 return NotFound();
             }
-            return await _context.Account.ToListAsync();
+
+            var accounts = _context.Account
+                .Where(a => a.Users.Contains(user))
+                .ToList();
+
+            return accounts;
+
+            //if (_context.Account == null)
+            //{
+            //    return NotFound();
+            //}
+            //return await _context.Account.ToListAsync();
         }
 
         [HttpGet("{id}")]
