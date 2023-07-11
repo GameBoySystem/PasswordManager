@@ -20,29 +20,29 @@ namespace PasswordManager.Client.Services.AccountService
 
         public async Task GetAccount()
         {
-            var result = await _http.GetFromJsonAsync<List<Account>>("api/Accounts");
+            var result = await _http.GetFromJsonAsync<List<Account>>("api/Passwords");
             if (result != null)
                 Accounts = result;
         }
 
         public async Task<Account> GetAccount(int id)
         {
-            var result = await _http.GetFromJsonAsync<Account>($"api/Accounts/{id}");
+            var result = await _http.GetFromJsonAsync<Account>($"api/Passwords/{id}");
             if (result != null)
                 return result;
-            throw new Exception("Account not found!");
+            throw new Exception("Password not found!");
         }
 
         public async Task PostAccount(Account account)
         {
-            await _http.PostAsJsonAsync("api/Accounts", account);
-            _navigationManager.NavigateTo("passwords");
+            await _http.PostAsJsonAsync("api/Passwords", account);
+            _navigationManager.NavigateTo("mypasswords");
         }
 
         public async Task PutAccount(int id, Account account)
         {
-            await _http.PutAsJsonAsync($"api/Accounts/{account.Id}", account);
-            _navigationManager.NavigateTo("passwords");
+            await _http.PutAsJsonAsync($"api/Passwords/{account.Id}", account);
+            _navigationManager.NavigateTo("mypasswords");
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace PasswordManager.Client.Services.AccountService
         public async Task DeleteAccount(int id)
         {
             //поставить проверку на null
-            await _http.DeleteAsync($"api/Accounts/{id}");
-            _navigationManager.NavigateTo("passwords");
+            await _http.DeleteAsync($"api/Passwords/{id}");
+            _navigationManager.NavigateTo("mypasswords");
         }
     }
 }

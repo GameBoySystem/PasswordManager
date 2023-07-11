@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace PasswordManager.Shared
 {
-    public class Account
+    public class AccountUpdate
     {
         public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public string URL { get; set; }
         public string? Comment { get; set; }
-        [JsonIgnore]
-        public ICollection<ApplicationUser>? Users { get; set; }
     }
 }
