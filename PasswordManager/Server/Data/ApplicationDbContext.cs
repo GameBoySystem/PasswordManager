@@ -1,9 +1,11 @@
 ﻿using Duende.IdentityServer.EntityFramework.Options;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 //using PasswordManager.Server.Models;
 using PasswordManager.Shared;
+using System.Reflection.Emit;
 
 namespace PasswordManager.Server.Data
 {
@@ -18,10 +20,12 @@ namespace PasswordManager.Server.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<ApplicationUser>().Navigation(e => e.Accounts).AutoInclude();
+
+            builder.Entity<ApplicationUser>()
+                .Navigation(e => e.Accounts).AutoInclude();
         }
 
-        public DbSet<Account> Account { get; set; }
+        public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountUpdate> AccountUpdates { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
     }

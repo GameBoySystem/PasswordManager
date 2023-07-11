@@ -42,7 +42,7 @@ namespace PasswordManager.Server.Controllers
                 return NotFound();
             }
 
-            var accounts = _context.Account
+            var accounts = _context.Accounts
                 .Where(a => a.Users.Contains(user))
                 .ToList();
             return accounts;
@@ -51,11 +51,11 @@ namespace PasswordManager.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
-            if (_context.Account == null)
+            if (_context.Accounts == null)
             {
                 return NotFound();
             }
-            var account = await _context.Account.FindAsync(id);
+            var account = await _context.Accounts.FindAsync(id);
 
             if (account == null)
             {
@@ -73,7 +73,7 @@ namespace PasswordManager.Server.Controllers
                 return BadRequest();
             }
 
-            var existingAccount = await _context.Account.FindAsync(id);
+            var existingAccount = await _context.Accounts.FindAsync(id);
 
             if (existingAccount == null)
             {
@@ -108,7 +108,7 @@ namespace PasswordManager.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Account>> PostAccount(Account account)
         {
-            if (_context.Account == null)
+            if (_context.Accounts == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Account'  is null.");
             }
@@ -120,9 +120,10 @@ namespace PasswordManager.Server.Controllers
             {
                 return NotFound();
             }
+
             account.Users = new List<ApplicationUser> { user };
 
-            _context.Account.Add(account);
+            _context.Accounts.Add(account);
 
             await _context.SaveChangesAsync();
 
@@ -132,17 +133,17 @@ namespace PasswordManager.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAccount(int id)
         {
-            if (_context.Account == null)
+            if (_context.Accounts == null)
             {
                 return NotFound();
             }
-            var account = await _context.Account.FindAsync(id);
+            var account = await _context.Accounts.FindAsync(id);
             if (account == null)
             {
                 return NotFound();
             }
 
-            _context.Account.Remove(account);
+            _context.Accounts.Remove(account);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -150,7 +151,7 @@ namespace PasswordManager.Server.Controllers
 
         private bool AccountExists(int id)
         {
-            return (_context.Account?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Accounts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

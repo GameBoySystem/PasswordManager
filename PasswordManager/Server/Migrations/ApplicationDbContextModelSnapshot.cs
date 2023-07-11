@@ -29,7 +29,7 @@ namespace PasswordManager.Server.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("AccountApplicationUser");
+                    b.ToTable("AccountApplicationUser", (string)null);
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -328,7 +328,7 @@ namespace PasswordManager.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Account");
+                    b.ToTable("Account", (string)null);
                 });
 
             modelBuilder.Entity("PasswordManager.Shared.AccountUpdate", b =>
@@ -354,7 +354,7 @@ namespace PasswordManager.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AccountUpdates");
+                    b.ToTable("AccountUpdates", (string)null);
                 });
 
             modelBuilder.Entity("PasswordManager.Shared.ApplicationUser", b =>
