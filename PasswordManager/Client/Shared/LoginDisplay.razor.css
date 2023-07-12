@@ -1,0 +1,25 @@
+﻿.passwordManagerLogo {
+    display: flex;
+    flex-grow: 1;
+}
+
+.logo{
+    font-size: x-large;
+}
+
+.loginDisplay {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+    align-items: baseline;
+}
+
+a, button{
+    color: white;
+    padding: 10px;
+    font-size: medium;
+}
+
+a:hover, button:hover {
+    text-decoration: underline;
+}

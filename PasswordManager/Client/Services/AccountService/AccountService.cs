@@ -36,13 +36,13 @@ namespace PasswordManager.Client.Services.AccountService
         public async Task PostAccount(Account account)
         {
             await _http.PostAsJsonAsync("api/Passwords", account);
-            _navigationManager.NavigateTo("mypasswords");
+            _navigationManager.NavigateTo("/");
         }
 
         public async Task PutAccount(int id, Account account)
         {
             await _http.PutAsJsonAsync($"api/Passwords/{account.Id}", account);
-            _navigationManager.NavigateTo("mypasswords");
+            _navigationManager.NavigateTo("/");
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace PasswordManager.Client.Services.AccountService
         {
             //поставить проверку на null
             await _http.DeleteAsync($"api/Passwords/{id}");
-            _navigationManager.NavigateTo("mypasswords");
+            _navigationManager.NavigateTo("/");
         }
     }
 }
