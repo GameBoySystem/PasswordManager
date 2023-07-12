@@ -12,8 +12,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PasswordManager.Server.Data;
-//using PasswordManager.Server.Migrations;
-//using PasswordManager.Server.Models;
 using PasswordManager.Shared;
 
 namespace PasswordManager.Server.Controllers
