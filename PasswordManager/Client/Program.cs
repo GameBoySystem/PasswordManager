@@ -1,4 +1,5 @@
 global using PasswordManager.Client.Services.AccountService;
+global using PasswordManager.Client.Services.AccessService;
 global using PasswordManager.Shared;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
@@ -16,6 +17,7 @@ builder.Services.AddHttpClient("PasswordManager.ServerAPI", client => client.Bas
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("PasswordManager.ServerAPI"));
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAccessService, AccessService>();
 
 builder.Services.AddMudServices();
 
